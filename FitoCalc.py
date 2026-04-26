@@ -72,7 +72,7 @@ def forma8(a, b):
 def forma9(a, b):
   ''' cone + meia esfera '''
   V = pi4 * a * (b**2)
-  A = pi4 * (b**2) * (b + math.sqrt((2 * (a**2) - (a * b) + (b**2)) / 2))
+  A = pi2 * (b**2) * (b + math.sqrt((2 * (a**2) - (a * b) + (b**2)) / 2))
   return V, A
 
 def forma10(a, b, c):
@@ -84,7 +84,7 @@ def forma10(a, b, c):
 def forma11(a, b, c):
   ''' prisma com base elíptica '''
   V = pi4 * (a * b * c)
-  A = pi4 * abc2(a, b, c)
+  A = pi2 * abc2(a, b, c)
   return V, A
 
 def forma12(a, b, c):
@@ -128,7 +128,7 @@ def forma18(a, b, c):
 def forma20(a, b, c):
   ''' prisma elíptico com inflação transapical '''
   V = pi4 * (a * b * c)
-  A = pi2 * abc2(a, b, c) + (a * c)
+  A = pi2 * abc2(a, b, c)
   return V, A
 
 def forma21(a, b, c):
