@@ -17,8 +17,8 @@ pi4 = (math.pi / 4)
 pi6 = (math.pi / 6)
 pi12 = (math.pi / 12)
 pi16 = (math.pi / 16)
-axbxc = (a * b * c)
-abc2 = ((a * b) + (b * c) + (a * c))
+axbxc = lambda a, b, c: (a * b * c)
+abc2 = lambda a, b, c: (a * b) + (b * c) + (a * c)
 
 def forma1(a):
   V = pi6 * (a**3)
@@ -32,7 +32,7 @@ def forma2(a, b):
   return V, A
 
 def forma3(a, b, c):
-  V = pi6 * axbxc
+  V = pi6 * axbxc(a, b, c)
   somabc = b + c
   raizdifquad = math.sqrt((4 * (a**2)) - (somabc**2))
   A = pi4 * somabc * ((somabc / 2) + ((2 * (a**2)) / raizdifquad) * math.asin(raizdifquad / (2 * a)))
@@ -69,18 +69,50 @@ def forma9(a, b):
   return V, A
 
 def forma10(a, b, c):
-  V = axbxc
-  A = 2 * abc2
+  V = axbxc(a, b, c)
+  A = 2 * abc2(a, b, c)
   return V, A
 
 def forma11(a, b, c):
-  V = pi4 * axbxc
-  A = pi4 * abc2
+  V = pi4 * axbxc(a, b, c)
+  A = pi4 * abc2(a, b, c)
   return V, A
 
 def forma12(a, b, c):
-  V = pi4 * axbxc
-  A = pi2 * abc2
+  V = pi4 * axbxc(a, b, c)
+  A = pi2 * abc2(a, b, c)
+  return V, A
+
+def forma13(a, b, c):
+  V = (1 / 2) * axbxc(a, b, c)
+  raizsomquad = math.sqrt((a**2) + (b**2))
+  A = a * b + ((raizsomquad / 4) * c)
+  return V, A
+
+def forma14(a, b, c):
+  V = pi4 * axbxc(a, b, c)
+  A = pi4 * abc2(a, b, c) + (a * c)
+  return V, A
+
+def forma15(a, b, c):
+  V = pi4 * axbxc(a, b, c)
+  A = pi4 * abc2(a, b, c) + (a * c)
+  return V, A
+
+def forma17(a, b, c):
+  V = (2 / 3) * a * (c**2) * math.asin(b / (2 * c))
+  raizdifquad = math.sqrt((a**2) - (4 * (c**2)))
+  A = pi2 * a * c + (b * (c + (((a**2) / (2 * raizdifquad)) * math.asin(raizdifquad / a))))
+  return V, A
+
+def forma18(a, b, c):
+  V = (math.sqrt(3) / 4) * c * (a**2)
+  A = 3 * a * c + ((math.sqrt(3) / 2) * (a**2))
+  return V, A
+
+def forma20(a, b, c):
+  V = pi4 * axbxc(a, b, c)
+  A = pi2 * abc2(a, b, c) + (a * c)
   return V, A
 
 
@@ -98,6 +130,12 @@ funcoes = {
     10: lambda row: forma10(row['a'], row['b'], row['c']),
     11: lambda row: forma11(row['a'], row['b'], row['c']),
     12: lambda row: forma12(row['a'], row['b'], row['c']),
+    13: lambda row: forma13(row['a'], row['b'], row['c']),
+    14: lambda row: forma14(row['a'], row['b'], row['c']),
+    15: lambda row: forma15(row['a'], row['b'], row['c']),
+    17: lambda row: forma17(row['a'], row['b'], row['c']),
+    18: lambda row: forma18(row['a'], row['b'], row['c']),
+    20: lambda row: forma20(row['a'], row['b'], row['c']),
 }
 resultados = df.apply(lambda row: funcoes[row['formato']](row), axis=1)
 
