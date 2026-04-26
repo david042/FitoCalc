@@ -32,7 +32,7 @@ def forma2(a, b):
   return V, A
 
 def forma3(a, b, c):
-  V = pi6 * a * b * c
+  V = pi6 * axbxc
   somabc = b + c
   raizdifquad = math.sqrt((4 * (a**2)) - (somabc**2))
   A = pi4 * somabc * ((somabc / 2) + ((2 * (a**2)) / raizdifquad) * math.asin(raizdifquad / (2 * a)))
