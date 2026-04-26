@@ -13,6 +13,7 @@ except Exception as e:
 # cálculo de volume e área
 
 pi2 = (math.pi / 2)
+pi3 = (math.pi / 3)
 pi4 = (math.pi / 4)
 pi6 = (math.pi / 6)
 pi12 = (math.pi / 12)
@@ -78,7 +79,7 @@ def forma9(a, b):
 def forma10(a, b, c):
   ''' caixa retangular '''
   V = a * b * c
-  A = 2 * abc2(a, b, c)
+  A = 2 * abc2(a, b, c) # 2ab + 2bc + 2ac = 2(ab + bc + ac)
   return V, A
 
 def forma11(a, b, c):
@@ -112,6 +113,13 @@ def forma15(a, b, c):
   A = pi4 * abc2(a, b, c) + (a * c)
   return V, A
 
+def forma16(a, b):
+  ''' extra, sickle-shaped cylinder '''
+  V = pi6 * a * (b**2)
+  raizsomquad = math.sqrt((a**2) + (b**2))
+  A = pi2 * b * raizsomquad
+  return V, A
+
 def forma17(a, b, c):
   ''' cimbelóide '''
   V = (2 / 3) * a * (c**2) * math.asin(b / (2 * c))
@@ -125,6 +133,13 @@ def forma18(a, b, c):
   A = 3 * a * c + ((math.sqrt(3) / 2) * (a**2))
   return V, A
 
+def forma19(a, c):
+  ''' extra, pyramid '''
+  V = (1 / 6) * (a**2) * c
+  raizsomquad = math.sqrt((a**2) + (8 * (c**2)))
+  A = (1 / 2) * (a**2) + (a * raizsomquad)
+  return V, A
+
 def forma20(a, b, c):
   ''' prisma elíptico com inflação transapical '''
   V = pi4 * a * b * c
@@ -135,6 +150,42 @@ def forma21(a, b, c):
   ''' gomfonemoide '''
   V = ((a * b) / 4) * (a + ((pi4 - 1) * b)) * math.asin(c / (2 * a))
   A = (b / 2) * ((2 * a) + (math.pi * a * math.asin(c / (2 * a))) + ((pi2 - 2) * b))
+  return V, A
+
+def forma22(a1, a2, b1, b2):
+  ''' cone + média esfera + cilindro '''
+  V = pi3 * (a1 + a2) * (b1**2) + (pi4 * (a2 + b2) * (b2**2)) + (pi12 * a2 * b1 * b2)
+  raiz1 = math.sqrt(((a1 / b1)**2) + (1 / 4))
+  raiz2 = math.sqrt(((((a1 * b2) / b1) - a1)**2) + ((b1**2) / 4))
+  fatorev = (pi2 * (b2**2)) * (1 + raiz1)  # x + xy = x * (1 + y)
+  A = math.pi * a1 * b1 + (pi4 * (b1**2)) + fatorev - (pi2 * b1 * raiz2)
+  return V, A
+
+def forma23(a1, a2, b1, b2, c):
+  ''' prisma elíptico + 4 cone '''
+  V = pi4 * a1 * b1 * c + (pi3 * a2 * (b2**2))
+  fatorev = pi2 * abc2(a1, b1, c) # pi/2*ab + pi/2*bc + pi/2*ac = pi/2*(ab + bc + ac)
+  raizsomquad = math.sqrt((4*(a2**2))+(b**2))
+  A = fatorev * math.pi * b2 * (raizsomquad - b2)
+  return V, A
+
+def forma24(a, b, c):
+  ''' extra, 2 cylinder + elliptic prism '''
+  V = pi4 * a * b * c
+  A = pi2 * abc2(a, b, c)
+  return V, A
+
+def forma25(a1, a2, a3, a4, b1, b2):
+  ''' elipsóide + 2 cones + cilindro '''
+  V = pi12 * b2 * ((2 * a1 * b1) + b2 * (3 * a2 + a3 + a4))
+  # fatorado, (pi/4)*a2*b2²+(pi/12)*(a3+a4)*b2²+(pi/6)*a1*b1*b2 = (pi/12)*b2*[(2*a1*b1)+b2*(3*a2+a3+a4)]
+  somabmeio = (b1 + b2) / 2
+  raizdifquad = math.sqrt((a1**2) - (somabmeio**2))
+  multraizes = ((a1**2) / raizdifquad) * math.asin(raizdifquad / a1)
+  b2qq = (b2**2) / 4
+  somaraizes = 2 * a2 + math.sqrt((a3**2) + (b2qq)) + math.sqrt((a4**2) + ((b2qq))) - b2
+  A = pi2 * (somabmeio * (somabmeio + multraizes) + b2 * somaraizes)
+  # fatorado, (pi/4)*(b1+b2)*(((b1+b2)/2)+multraizes)+(pi/2)*b2*somaraizes = (pi/2)*(((b1+b2)/2)*(((b1+b2)/2)+multraizes)+b2*somaraizes)
   return V, A
 
 def forma26(a):
@@ -178,9 +229,16 @@ funcoes = {
     13: lambda row: forma13(row['a'], row['b'], row['c']),
     14: lambda row: forma14(row['a'], row['b'], row['c']),
     15: lambda row: forma15(row['a'], row['b'], row['c']),
+    16: lambda row: forma16(row['a'], row['b']),
     17: lambda row: forma17(row['a'], row['b'], row['c']),
     18: lambda row: forma18(row['a'], row['b'], row['c']),
+    19: lambda row: forma19(row['a'], row['c']),
     20: lambda row: forma20(row['a'], row['b'], row['c']),
+    21: lambda row: forma21(row['a'], row['b'], row['c']),
+    22: lambda row: forma22(row['a1'], row['a2'], row['b1'], row['b2']),
+    23: lambda row: forma23(row['a1'], row['a2'], row['b1'], row['b2'], row['c']),
+    24: lambda row: forma24(row['a'], row['b'], row['c']),
+    25: lambda row: forma25(row['a1'], row['a2'], row['a3'], row['a4'], row['b1'], row['b2']),
     26: lambda row: forma26(row['a']),
     28: lambda row: forma28(row['a'], row['b']),
     29: lambda row: forma29(row['a'], row['b'], row['c']),
