@@ -33,7 +33,7 @@ def forma2(a, b):
 
 def forma3(a, b, c):
   ''' elipsóide '''
-  V = pi6 * (a * b * c)
+  V = pi6 * a * b * c
   somabc = b + c
   raizdifquad = math.sqrt((4 * (a**2)) - (somabc**2))
   A = pi4 * somabc * ((somabc / 2) + ((2 * (a**2)) / raizdifquad) * math.asin(raizdifquad / (2 * a)))
@@ -77,38 +77,38 @@ def forma9(a, b):
 
 def forma10(a, b, c):
   ''' caixa retangular '''
-  V = (a * b * c)
+  V = a * b * c
   A = 2 * abc2(a, b, c)
   return V, A
 
 def forma11(a, b, c):
   ''' prisma com base elíptica '''
-  V = pi4 * (a * b * c)
+  V = pi4 * a * b * c
   A = pi2 * abc2(a, b, c)
   return V, A
 
 def forma12(a, b, c):
   ''' prisma elíptico com construção transapical '''
-  V = pi4 * (a * b * c)
+  V = pi4 * a * b * c
   A = pi2 * abc2(a, b, c)
   return V, A
 
 def forma13(a, b, c):
   ''' prisma com base paralelograma '''
-  V = (1 / 2) * (a * b * c)
+  V = (1 / 2) * a * b * c
   raizsomquad = math.sqrt((a**2) + (b**2))
   A = a * b + ((raizsomquad / 4) * c)
   return V, A
 
 def forma14(a, b, c):
   ''' prisma semi-elíptico '''
-  V = pi4 * (a * b * c)
+  V = pi4 * a * b * c
   A = pi4 * abc2(a, b, c) + (a * c)
   return V, A
 
 def forma15(a, b, c):
   ''' prisma em forma de foice '''
-  V = pi4 * (a * b * c)
+  V = pi4 * a * b * c
   A = pi4 * abc2(a, b, c) + (a * c)
   return V, A
 
@@ -127,7 +127,7 @@ def forma18(a, b, c):
 
 def forma20(a, b, c):
   ''' prisma elíptico com inflação transapical '''
-  V = pi4 * (a * b * c)
+  V = pi4 * a * b * c
   A = pi2 * abc2(a, b, c)
   return V, A
 
@@ -137,8 +137,31 @@ def forma21(a, b, c):
   A = (b / 2) * ((2 * a) + (math.pi * a * math.asin(c / (2 * a))) + ((pi2 - 2) * b))
   return V, A
 
+def forma26(a):
+  ''' média esfera '''
+  V = pi12 * (a**3)
+  A = ((3 * math.pi) / 4) * (a**2)
+  return V, A
 
-#relacionando as medidas com as funções para cálculo
+def forma28(a, b):
+  ''' cilindro girdle view '''
+  V = pi4 * (b**2) * a
+  A = math.pi * b * ((b / 2) + a)
+  return V, A
+
+def forma29(a, b, c):
+  ''' prisma em base elíptica girdle view '''
+  V = pi4 * a * b * c
+  A = pi2 * abc2(a, b, c)
+  return V, A
+
+def forma30(a, b):
+  ''' prisma em base triangular girdle view '''
+  V = (math.sqrt(3) / a) * a * (b**2)
+  A = 3 * a * b + ((math(3) / 2) * (b**2))
+  return V, A
+
+# relacionando as medidas com as funções para cálculo
 funcoes = {
     1: lambda row: forma1(row['a']),
     2: lambda row: forma2(row['a'], row['b']),
@@ -158,10 +181,13 @@ funcoes = {
     17: lambda row: forma17(row['a'], row['b'], row['c']),
     18: lambda row: forma18(row['a'], row['b'], row['c']),
     20: lambda row: forma20(row['a'], row['b'], row['c']),
-    21: lambda row: forma21(row['a'], row['b'], row['c']),
+    26: lambda row: forma26(row['a']),
+    28: lambda row: forma28(row['a'], row['b']),
+    29: lambda row: forma29(row['a'], row['b'], row['c']),
+    30: lambda row: forma30(row['a'], row['b']),
 }
 resultados = df.apply(lambda row: funcoes[row['formato']](row), axis=1)
 
-#escrevendo no arquivo
+# escrevendo no arquivo
 df['volume'] = resultados.apply(lambda x: x[0])
 df['area']   = resultados.apply(lambda x: x[1])
