@@ -11,7 +11,6 @@ except Exception as e:
     print(f"Ocorreu um erro ao carregar a planilha: {e}")
 
 # cálculo de volume e área
-
 pi2 = (math.pi / 2)
 pi3 = (math.pi / 3)
 pi4 = (math.pi / 4)
@@ -185,13 +184,22 @@ def forma25(a1, a2, a3, a4, b1, b2):
   b2qq = (b2**2) / 4
   somaraizes = 2 * a2 + math.sqrt((a3**2) + (b2qq)) + math.sqrt((a4**2) + ((b2qq))) - b2
   A = pi2 * (somabmeio * (somabmeio + multraizes) + b2 * somaraizes)
-  # fatorado, (pi/4)*(b1+b2)*(((b1+b2)/2)+multraizes)+(pi/2)*b2*somaraizes = (pi/2)*(((b1+b2)/2)*(((b1+b2)/2)+multraizes)+b2*somaraizes)
+  # fatorado, (pi/4)*(b1+b2)*(((b1+b2)/2)+x)+(pi/2)*b2*y = (pi/2)*(((b1+b2)/2)*(((b1+b2)/2)+x)+b2*y)
   return V, A
 
 def forma26(a):
   ''' média esfera '''
   V = pi12 * (a**3)
   A = ((3 * math.pi) / 4) * (a**2)
+  return V, A
+
+def forma27(a1, a2, a3, b1, b2, b3):
+  ''' cone + 3 cilindros '''
+  V = pi12 * ((3 * a2 * (b2**2)) + (6 * a3 * (b3**2)) + (a1 * ((b1**2) + (b1 * b2) + (b2**2))))
+  # fatorado, (pi/4)x+(pi/2)y+(pi/12)z = (pi/12)(3x+6y+z)
+  raizsomquad = math.sqrt((a1**2) + (((b1 - b2) / 2)**2))
+  A = pi4 * ((2 * ((b1 + b2) * raizsomquad)) + ((b1**2) + (b2**2)) + (8 * ((a2 * b2) + (a3 * b3))))
+  # fatorado, (pi/2)x+(pi/4)y+(2pi)z = (pi/4)(2x+y+8z)
   return V, A
 
 def forma28(a, b):
@@ -210,6 +218,12 @@ def forma30(a, b):
   ''' prisma em base triangular girdle view '''
   V = (math.sqrt(3) / a) * a * (b**2)
   A = 3 * a * b + ((math(3) / 2) * (b**2))
+  return V, A
+
+def forma31(a1, a2, b1, b2, c):
+  ''' extra, box + elliptic prism '''
+  V = c * (a1 * b1 + (pi4 * a2 * b2))
+  A = c * (2 * a1 + b1 + (pi2 * a2) + (pi2 * b2)) + (2 * a1 * b1 + (pi2 * a2 * b2))
   return V, A
 
 # relacionando as medidas com as funções para cálculo
@@ -240,12 +254,17 @@ funcoes = {
     24: lambda row: forma24(row['a'], row['b'], row['c']),
     25: lambda row: forma25(row['a1'], row['a2'], row['a3'], row['a4'], row['b1'], row['b2']),
     26: lambda row: forma26(row['a']),
+    27: lambda row: forma27(row['a1'], row['a2'], row['a3'], row['b1'], row['b2'], row['b3']),
     28: lambda row: forma28(row['a'], row['b']),
     29: lambda row: forma29(row['a'], row['b'], row['c']),
     30: lambda row: forma30(row['a'], row['b']),
+    31: lambda row: forma31(row['a1'], row['a2'], row['b1'], row['b2'], row['c'])
 }
 resultados = df.apply(lambda row: funcoes[row['formato']](row), axis=1)
 
-# escrevendo no arquivo
+# escrevendo na planilha
 df['volume'] = resultados.apply(lambda x: x[0])
 df['area']   = resultados.apply(lambda x: x[1])
+
+# salvando em um arquivo
+df.to_csv('calculado.csv', index=False)
