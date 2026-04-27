@@ -164,8 +164,8 @@ def forma23(a1, a2, b1, b2, c):
   ''' prisma elíptico + 4 cone '''
   V = pi4 * a1 * b1 * c + (pi3 * a2 * (b2**2))
   fatorev = pi2 * abc2(a1, b1, c) # pi/2*ab + pi/2*bc + pi/2*ac = pi/2*(ab + bc + ac)
-  raizsomquad = math.sqrt((4*(a2**2))+(b**2))
-  A = fatorev * math.pi * b2 * (raizsomquad - b2)
+  raizsomquad = math.sqrt((4*(a2**2))+(b2**2))
+  A = fatorev + math.pi * b2 * (raizsomquad - b2)
   return V, A
 
 def forma24(a, b, c):
@@ -216,8 +216,8 @@ def forma29(a, b, c):
 
 def forma30(a, b):
   ''' prisma em base triangular girdle view '''
-  V = (math.sqrt(3) / a) * a * (b**2)
-  A = 3 * a * b + ((math(3) / 2) * (b**2))
+  V = (math.sqrt(3) / 4) * a * (b**2)
+  A = 3 * a * b + ((math.sqrt(3) / 2) * (b**2))
   return V, A
 
 def forma31(a1, a2, b1, b2, c):
