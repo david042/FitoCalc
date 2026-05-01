@@ -1,14 +1,20 @@
 import pandas as pd
 import math as math
 
-# link para o arquivo
-google_sheet_csv_url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT0A5AnVng08eEehtYZV11l8NW5Z4eMs1yHAPCm3zZj8Aq5O3zuj-2KohXz0H9qblzoHngC9W1p8vn1/pub?output=csv'
-
+link = input('cole o link para o arquivo:\n')
+separador = input('a planilha está com o separador decimal como vírgula? s/N\n')
 try:
-    df = pd.read_csv(google_sheet_csv_url)
-    print("Planilha carregada com sucesso!")
+  if separador == 's':
+      df = pd.read_csv(link, decimal=',')
+  else:
+      df = pd.read_csv(link)
+
+  forma = input('digite como a coluna forma/formato está na tabela:\n')
+  volume = input('digite como a coluna volume está na tabela:\n')
+  area = input('digite como a coluna área/superfície está na tabela:\n')
+  print("Planilha carregada com sucesso!\n")
 except Exception as e:
-    print(f"Ocorreu um erro ao carregar a planilha: {e}")
+  print(f"Ocorreu um erro ao carregar a planilha: {e}")
 
 # cálculo de volume e área
 pi2 = (math.pi / 2)
@@ -260,11 +266,12 @@ funcoes = {
     30: lambda row: forma30(row['a'], row['b']),
     31: lambda row: forma31(row['a1'], row['a2'], row['b1'], row['b2'], row['c'])
 }
-resultados = df.apply(lambda row: funcoes[row['formato']](row), axis=1)
+resultados = df.apply(lambda row: funcoes[row[forma]](row), axis=1)
 
 # escrevendo na planilha
-df['volume'] = resultados.apply(lambda x: x[0])
-df['area']   = resultados.apply(lambda x: x[1])
+df[volume] = resultados.apply(lambda x: x[0])
+df[area]   = resultados.apply(lambda x: x[1])
 
 # salvando em um arquivo
-df.to_csv('calculado.csv', index=False)
+df.to_csv('calculado.csv', index=False, decimal=',')
+print('salvo como calculado.csv')
